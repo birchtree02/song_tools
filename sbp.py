@@ -9,6 +9,9 @@ FOLDER_NAME = "songs-folder"
 SBP_FILE = re.compile(".*\.sbp *[0-9]*")
 
 
+# TODO: stop storing .cho files; just keep them in memory
+
+
 class SBP_backup:
     def __init__(self, backup_file=None, backup_text=None, folder=FOLDER_NAME):
         """
