@@ -15,8 +15,8 @@ class ChordProParser:
     def __init__(self):
         pass
 
-    def parseChordPro(self, songString: str):
-        song = Song(songString)
+    def parseChordPro(self, songString: str, title="New Song"):
+        song = Song(songString, title=title)
         for line in songString.split("\n"):
             cur_line = None
             if re.match(self.COMMENT, line):
