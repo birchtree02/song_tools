@@ -1,6 +1,6 @@
 import re
 
-from song import Line, Song
+from song_tools.song import Line, Song
 
 
 class ChordProParser:

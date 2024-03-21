@@ -1,6 +1,6 @@
 from airium import Airium
 
-import song
+from song_tools import song
 
 
 class ANSIColors:
