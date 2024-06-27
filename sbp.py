@@ -9,7 +9,7 @@ FOLDER_NAME = "songs-folder"
 SBP_FILE = re.compile(".*\.sbp *[0-9]*")
 
 
-# TODO: stop storing .cho files; just keep them in memory
+# TODO: stop storing .cho files; just keep them in memory (as Song objects?)
 
 
 class SBP_backup:
@@ -49,21 +49,17 @@ class SBP_backup:
         }
         self.sets = []
 
-    def _load_backup(self, backup_file):  # TODO: work from a zip
-        if re.match(SBP_FILE, backup_file):
-            with zipfile.ZipFile(backup_file, mode="r") as backup:
-                self._load_backup_from_text(
-                    backup.read("dataFile.txt").decode("utf-8").split("\n")[1]
-                )
-        else:
-            self._load_backup_file(backup_file)
+    def _load_backup(self, backup_file):
+        with zipfile.ZipFile(backup_file, mode="r") as backup:
+            backup_text = backup.read("dataFile.txt").decode("utf-8").split("\n")[1]
+
+        self._load_backup_from_text(backup_text)
 
     def _load_backup_file(self, backup_file):
         with open(backup_file, "r") as f:
             self.data = json.loads(f.readlines()[1])
 
     def _load_backup_from_text(self, text):
-        text = text.split("\n")[1]
         self.data = json.loads(text)
 
     def create_all_cho_files(self):
@@ -155,11 +151,12 @@ class SBP_backup:
 if __name__ == "__main__":
     import sys
 
-    from spotify_tools import SpotifyTools
+    zipped_file = sys.argv[1]
 
-    # sbp = SBP_backup('files/dataFile.txt')
-    sbp = SBP_backup(sys.argv[1])
+    sbp = SBP_backup(zipped_file)
+
     if len(sys.argv) > 2:
         FOLDER_NAME = sys.argv[2]
         logging.info(FOLDER_NAME)
-    sbp.create_all_cho_files()
+
+    print(sbp.songs_dict)
